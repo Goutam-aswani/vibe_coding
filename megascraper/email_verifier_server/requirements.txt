@@ -1,0 +1,41 @@
+# FastAPI Email Verifier API Requirements
+
+# Core framework
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+
+# HTTP client
+httpx>=0.27.0
+
+# Browser automation for cookie fetching
+playwright>=1.40.0
+python-dotenv>=1.0.0
+
+# Compression support (REQUIRED)
+brotli>=1.1.0
+zstandard>=0.25.0
+
+# Email validation
+email-validator>=2.1.0
+
+# Optional: Redis for caching and job queue persistence
+redis>=5.0.0
+hiredis>=2.2.3
+
+# Optional: PostgreSQL for job storage
+asyncpg>=0.29.0
+sqlalchemy>=2.0.0
+
+# Development dependencies
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+httpx>=0.27.0  # for testing
+
+# Monitoring (optional)
+prometheus-client>=0.19.0
+
+# Logging
+python-json-logger>=2.0.7

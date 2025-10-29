@@ -1,0 +1,21 @@
+# FastAPI and server
+fastapi
+uvicorn[standard]
+
+# HTTP client
+httpx
+
+# Browser automation
+selenium
+webdriver-manager
+
+# HTML parsing
+beautifulsoup4
+lxml
+
+# Data validation
+pydantic
+pydantic-settings
+
+# Utilities
+python-dotenv

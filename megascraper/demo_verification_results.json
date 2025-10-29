@@ -1,0 +1,26 @@
+[
+  {
+    "index": "0",
+    "status": "error",
+    "safetosend": "Unknown",
+    "type": "Unknown",
+    "reasons": "'utf-8' codec can't decode byte 0xb5 in position 1: invalid start byte",
+    "debug": []
+  },
+  {
+    "index": "1",
+    "status": "error",
+    "safetosend": "Unknown",
+    "type": "Unknown",
+    "reasons": "'utf-8' codec can't decode byte 0xb5 in position 1: invalid start byte",
+    "debug": []
+  },
+  {
+    "index": "2",
+    "status": "error",
+    "safetosend": "Unknown",
+    "type": "Unknown",
+    "reasons": "'utf-8' codec can't decode byte 0xb5 in position 1: invalid start byte",
+    "debug": []
+  }
+]
