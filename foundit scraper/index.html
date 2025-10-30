@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foundit Job Scraper</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .help-text {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .results {
+            display: none;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            opacity: 0.9;
+        }
+
+        .jobs-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .job-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .job-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+        }
+
+        .job-header {
+            display: flex;
+            align-items: start;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .company-logo {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 5px;
+        }
+
+        .job-info {
+            flex: 1;
+        }
+
+        .job-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .company-name {
+            font-size: 1rem;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .job-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .job-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .skill-tag {
+            background: #f0f0f0;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        .job-description {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            max-height: 150px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .job-description.expanded {
+            max-height: none;
+        }
+
+        .read-more {
+            color: #667eea;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .apply-btn {
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .apply-btn:hover {
+            background: #764ba2;
+        }
+
+        .error {
+            background: #fee;
+            border: 2px solid #fcc;
+            color: #c33;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Foundit Job Scraper</h1>
+            <p>Search for jobs from foundit.in - Fast & Easy</p>
+        </div>
+
+        <div class="card">
+            <form id="scrapeForm">
+                <div class="form-group">
+                    <label for="jobRoles">Job Roles (one per line)</label>
+                    <textarea id="jobRoles" placeholder="gen ai engineer&#10;machine learning engineer&#10;data scientist" required></textarea>
+                    <div class="help-text">Enter each job role on a new line. You can search for multiple roles at once.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="experienceRange">Experience Range</label>
+                    <select id="experienceRange">
+                        <option value="0~0">Freshers (0-0 years)</option>
+                        <option value="0~2">0-2 years</option>
+                        <option value="2~5">2-5 years</option>
+                        <option value="5~10">5-10 years</option>
+                        <option value="10~15">10-15 years</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <input type="text" id="country" value="India" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="limitPerRole">Maximum Jobs per Role</label>
+                    <input type="number" id="limitPerRole" min="1" max="100" value="50" required>
+                    <div class="help-text">Maximum: 100 jobs per role</div>
+                </div>
+
+                <button type="submit" class="btn" id="submitBtn">Search Jobs</button>
+            </form>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Searching for jobs... This may take a few seconds.</p>
+        </div>
+
+        <div id="error"></div>
+
+        <div class="results" id="results">
+            <div class="card">
+                <h2 style="margin-bottom: 20px;">Search Results</h2>
+                
+                <div class="stats" id="stats"></div>
+                
+                <div id="jobsContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8006';
+
+        document.getElementById('scrapeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Get form values
+            const jobRolesText = document.getElementById('jobRoles').value;
+            const jobRoles = jobRolesText.split('\n')
+                .map(role => role.trim())
+                .filter(role => role.length > 0);
+
+            if (jobRoles.length === 0) {
+                showError('Please enter at least one job role');
+                return;
+            }
+
+            const requestData = {
+                job_roles: jobRoles,
+                experience_range: document.getElementById('experienceRange').value,
+                country: document.getElementById('country').value,
+                limit_per_role: parseInt(document.getElementById('limitPerRole').value)
+            };
+
+            // Show loading, hide results
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('results').classList.remove('active');
+            document.getElementById('error').innerHTML = '';
+            document.getElementById('submitBtn').disabled = true;
+
+            try {
+                const response = await fetch(`${API_URL}/scrape`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                // Hide loading
+                document.getElementById('loading').classList.remove('active');
+                document.getElementById('submitBtn').disabled = false;
+
+                // Show results
+                displayResults(data);
+
+            } catch (error) {
+                document.getElementById('loading').classList.remove('active');
+                document.getElementById('submitBtn').disabled = false;
+                showError(`Error: ${error.message}. Make sure the API server is running on ${API_URL}`);
+            }
+        });
+
+        function showError(message) {
+            document.getElementById('error').innerHTML = `
+                <div class="error">${message}</div>
+            `;
+        }
+
+        function displayResults(data) {
+            // Display stats
+            const statsHtml = `
+                <div class="stat-card">
+                    <h3>${data.stats.total_jobs_found}</h3>
+                    <p>Total Jobs Found</p>
+                </div>
+                <div class="stat-card">
+                    <h3>${data.stats.total_roles_searched}</h3>
+                    <p>Roles Searched</p>
+                </div>
+                <div class="stat-card">
+                    <h3>${data.stats.execution_time_seconds}s</h3>
+                    <p>Search Time</p>
+                </div>
+            `;
+            document.getElementById('stats').innerHTML = statsHtml;
+
+            // Display jobs
+            const jobsHtml = data.jobs.map((job, index) => {
+                const location = job.locations[0];
+                const locationStr = [location.city, location.state, location.country]
+                    .filter(Boolean).join(', ');
+                
+                const skills = [...job.skills, ...job.it_skills].slice(0, 10);
+                
+                const salaryStr = job.salary.is_disclosed 
+                    ? `${job.salary.currency} ${job.salary.minimum.toLocaleString()} - ${job.salary.maximum.toLocaleString()}`
+                    : 'Not disclosed';
+
+                return `
+                    <div class="job-card">
+                        <div class="job-header">
+                            ${job.company.logo_url ? `<img src="${job.company.logo_url}" alt="${job.company.name}" class="company-logo" onerror="this.style.display='none'">` : ''}
+                            <div class="job-info">
+                                <div class="job-title">${job.title}</div>
+                                <div class="company-name">${job.company.name}</div>
+                            </div>
+                        </div>
+
+                        <div class="job-meta">
+                            <span>📍 ${locationStr}</span>
+                            <span>💼 ${job.experience.minimum_years}-${job.experience.maximum_years} years</span>
+                            <span>💰 ${salaryStr}</span>
+                            <span>📅 ${new Date(job.posted_date).toLocaleDateString()}</span>
+                        </div>
+
+                        ${skills.length > 0 ? `
+                            <div class="skills">
+                                ${skills.map(skill => `<span class="skill-tag">${skill.name}</span>`).join('')}
+                            </div>
+                        ` : ''}
+
+                        <div class="job-description" id="desc-${index}">
+                            ${job.description.replace(/<[^>]*>/g, '').substring(0, 300)}...
+                        </div>
+                        <span class="read-more" onclick="toggleDescription(${index})">Read more</span>
+
+                        <br><br>
+                        <a href="${job.apply_url}" target="_blank" class="apply-btn">Apply Now →</a>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('jobsContainer').innerHTML = jobsHtml || '<p>No jobs found.</p>';
+            document.getElementById('results').classList.add('active');
+
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function toggleDescription(index) {
+            const desc = document.getElementById(`desc-${index}`);
+            desc.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

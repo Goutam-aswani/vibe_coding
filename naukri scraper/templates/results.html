@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scraping Results - Naukri Job Scraper</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .summary {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .stat-card .label {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+        
+        .stat-card .value {
+            font-size: 2em;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        
+        .keyword-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .keyword-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .keyword-title {
+            font-size: 1.5em;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .keyword-meta {
+            color: #666;
+            font-size: 0.95em;
+        }
+        
+        .job-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+            background: #fafafa;
+        }
+        
+        .job-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .job-header {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: start;
+        }
+        
+        .company-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: contain;
+            background: white;
+            padding: 5px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .job-info {
+            flex: 1;
+        }
+        
+        .job-title {
+            font-size: 1.3em;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .company-name {
+            color: #666;
+            font-size: 1.05em;
+            margin-bottom: 10px;
+        }
+        
+        .job-meta {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #555;
+            font-size: 0.9em;
+            background: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+        }
+        
+        .job-description {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            max-height: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .skills {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        
+        .skill-tag {
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+        }
+        
+        .job-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .back-button {
+            background: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .no-jobs {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        @media (max-width: 768px) {
+            .job-header {
+                flex-direction: column;
+            }
+            
+            .job-meta {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="btn btn-primary back-button">
+            ← Back to Search
+        </a>
+        
+        <div class="header">
+            <h1>🎯 Job Scraping Results</h1>
+            <div class="summary">
+                <div class="stat-card">
+                    <div class="label">Keywords Searched</div>
+                    <div class="value">{{ keywords|length }}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Total Jobs Found</div>
+                    <div class="value">{{ results|sum(attribute='jobs_scraped') }}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Pages Scraped</div>
+                    <div class="value">{{ results|sum(attribute='pages_scraped') }}</div>
+                </div>
+            </div>
+        </div>
+        
+        {% for result in results %}
+        <div class="keyword-section">
+            <div class="keyword-header">
+                <div>
+                    <div class="keyword-title">🔍 {{ result.keyword }}</div>
+                    <div class="keyword-meta">
+                        Found {{ result.total_jobs_found }} jobs • Scraped {{ result.jobs_scraped }} jobs from {{ result.pages_scraped }} pages
+                    </div>
+                </div>
+            </div>
+            
+            {% if result.jobs %}
+                {% for job in result.jobs %}
+                <div class="job-card">
+                    <div class="job-header">
+                        {% if job.company_logo %}
+                        <img src="{{ job.company_logo }}" alt="{{ job.company_name }}" class="company-logo">
+                        {% endif %}
+                        <div class="job-info">
+                            <div class="job-title">{{ job.title }}</div>
+                            <div class="company-name">{{ job.company_name }}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="job-meta">
+                        {% if job.experience %}
+                        <div class="meta-item">
+                            💼 {{ job.experience }}
+                        </div>
+                        {% endif %}
+                        
+                        {% if job.salary %}
+                        <div class="meta-item">
+                            💰 {{ job.salary }}
+                        </div>
+                        {% endif %}
+                        
+                        {% if job.locations %}
+                        <div class="meta-item">
+                            📍 {{ job.locations|join(', ') }}
+                        </div>
+                        {% endif %}
+                        
+                        {% if job.posted_date %}
+                        <div class="meta-item">
+                            📅 {{ job.posted_date }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    {% if job.job_description %}
+                    <div class="job-description">
+                        {{ job.job_description[:300] }}{% if job.job_description|length > 300 %}...{% endif %}
+                    </div>
+                    {% endif %}
+                    
+                    {% if job.skills and job.skills[0] %}
+                    <div class="skills">
+                        {% for skill in job.skills[:5] %}
+                            {% if skill.strip() %}
+                            <span class="skill-tag">{{ skill.strip() }}</span>
+                            {% endif %}
+                        {% endfor %}
+                        {% if job.skills|length > 5 %}
+                        <span class="skill-tag">+{{ job.skills|length - 5 }} more</span>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    
+                    <div class="job-actions">
+                        {% if job.job_url %}
+                        <a href="{{ job.job_url }}" target="_blank" class="btn btn-primary">
+                            View Job Details →
+                        </a>
+                        {% endif %}
+                        <button class="btn btn-secondary" onclick="copyJobId('{{ job.job_id }}')">
+                            📋 Copy Job ID
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-jobs">
+                    No jobs found for this keyword
+                </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        
+        <a href="/" class="btn btn-primary back-button">
+            ← Search Again
+        </a>
+    </div>
+    
+    <script>
+        function copyJobId(jobId) {
+            navigator.clipboard.writeText(jobId).then(() => {
+                alert('Job ID copied: ' + jobId);
+            });
+        }
+    </script>
+</body>
+</html>

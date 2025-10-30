@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     
     # Server Settings
     HOST: str = "0.0.0.0"
-    PORT: int = 8000
+    PORT: int = 8001
     WORKERS: int = 4
     DEBUG: bool = False
     

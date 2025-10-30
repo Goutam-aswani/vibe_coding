@@ -298,7 +298,7 @@ View current cookie age in logs:
 ### API Metrics Endpoint
 
 ```bash
-curl http://localhost:8000/metrics
+curl http://localhost:8001/metrics
 ```
 
 Returns:

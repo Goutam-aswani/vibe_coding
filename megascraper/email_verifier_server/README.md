@@ -91,7 +91,7 @@ API_KEY=your-secret-api-key-here
 
 # Optional: Server settings
 HOST=0.0.0.0
-PORT=8000
+PORT=8001
 WORKERS=4
 RATE_LIMIT_DELAY=1.0
 MAX_CONCURRENT=5
@@ -104,12 +104,12 @@ MAX_CONCURRENT=5
 
 **Development mode:**
 ```bash
-python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8001
 ```
 
 **Production mode:**
 ```bash
-python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4
+python -m uvicorn app.main:app --host 0.0.0.0 --port 8001 --workers 4
 ```
 
 **Using Docker:**
@@ -119,9 +119,9 @@ docker-compose up -d
 
 ### 4. Access the API
 
-- **Swagger UI**: http://localhost:8000/docs
-- **ReDoc**: http://localhost:8000/redoc
-- **Health Check**: http://localhost:8000/health
+- **Swagger UI**: http://localhost:8001/docs
+- **ReDoc**: http://localhost:8001/redoc
+- **Health Check**: http://localhost:8001/health
 
 ## 📚 API Endpoints
 
@@ -331,7 +331,7 @@ docker build -t email-verifier-api .
 
 # Run container
 docker run -d \
-  -p 8000:8000 \
+  -p 8001:8001 \
   -e EMAILVERIFIER_SESSION_COOKIE=your_cookie \
   -e API_KEY=your_api_key \
   --name email-verifier \
@@ -374,7 +374,7 @@ pytest tests/ --cov=app --cov-report=html
 | `EMAILVERIFIER_SESSION_COOKIE` | Yes | - | PHPSESSID from check.emailverifier.online |
 | `API_KEY` | No | - | API key for authentication |
 | `HOST` | No | `0.0.0.0` | Server host |
-| `PORT` | No | `8000` | Server port |
+| `PORT` | No | `8001` | Server port |
 | `WORKERS` | No | `4` | Number of worker processes |
 | `RATE_LIMIT_DELAY` | No | `1.0` | Delay between requests (seconds) |
 | `MAX_CONCURRENT` | No | `5` | Max concurrent verifications |
@@ -393,9 +393,9 @@ To get a fresh session cookie:
 
 ## 📞 Support
 
-- **API Docs**: http://localhost:8000/docs
-- **Health**: http://localhost:8000/health
-- **Metrics**: http://localhost:8000/metrics
+- **API Docs**: http://localhost:8001/docs
+- **Health**: http://localhost:8001/health
+- **Metrics**: http://localhost:8001/metrics
 
 ## 📄 License
 

@@ -37,7 +37,7 @@ python start.py
 
 ### Option B: Using uvicorn directly
 ```bash
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8001
 ```
 
 ### Option C: Using Docker
@@ -47,9 +47,9 @@ docker-compose up -d
 
 ## 4. Access the API
 
-- **Swagger UI**: http://localhost:8000/docs
-- **ReDoc**: http://localhost:8000/redoc
-- **Health Check**: http://localhost:8000/health
+- **Swagger UI**: http://localhost:8001/docs
+- **ReDoc**: http://localhost:8001/redoc
+- **Health Check**: http://localhost:8001/health
 
 ## 5. Test It!
 
@@ -57,15 +57,15 @@ docker-compose up -d
 
 ```bash
 # Health check
-curl http://localhost:8000/health
+curl http://localhost:8001/health
 
 # Verify single email
-curl -X POST http://localhost:8000/api/v1/verify \
+curl -X POST http://localhost:8001/api/v1/verify \
   -H "Content-Type: application/json" \
   -d '{"email": "test@gmail.com"}'
 
 # Verify batch
-curl -X POST http://localhost:8000/api/v1/verify/batch \
+curl -X POST http://localhost:8001/api/v1/verify/batch \
   -H "Content-Type: application/json" \
   -d '{"emails": ["test1@gmail.com", "test2@gmail.com"], "max_concurrent": 2}'
 ```
@@ -77,7 +77,7 @@ import requests
 
 # Verify single email
 response = requests.post(
-    "http://localhost:8000/api/v1/verify",
+  "http://localhost:8001/api/v1/verify",
     json={"email": "test@gmail.com"}
 )
 print(response.json())
