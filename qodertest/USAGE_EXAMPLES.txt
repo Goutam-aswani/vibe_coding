@@ -1,0 +1,152 @@
+================================================================================
+FASTAPI ENTITY EXTRACTION SERVICE - USAGE EXAMPLES
+================================================================================
+
+SETUP:
+------
+1. Install dependencies:
+   pip install -r requirements.txt
+
+2. Download spaCy model:
+   python -m spacy download en_core_web_sm
+
+3. Run the application:
+   python app.py
+   
+   The service will start at http://localhost:8000
+
+
+CURL EXAMPLES:
+--------------
+
+Example 1: Basic Entity Extraction
+-----------------------------------
+curl -X POST "http://localhost:8000/extract_entities" \
+  -H "Content-Type: application/json" \
+  -d '{"text":"Apple Inc. was founded by Steve Jobs in Cupertino, California."}'
+
+Expected Response:
+{
+  "entities": [
+    {"text": "Apple Inc.", "label": "ORG"},
+    {"text": "Steve Jobs", "label": "PERSON"},
+    {"text": "Cupertino", "label": "GPE"},
+    {"text": "California", "label": "GPE"}
+  ]
+}
+
+
+Example 2: Multiple Entity Types
+---------------------------------
+curl -X POST "http://localhost:8000/extract_entities" \
+  -H "Content-Type: application/json" \
+  -d '{"text":"Barack Obama was the President of the United States. He worked at the White House in Washington, D.C."}'
+
+Expected Response:
+{
+  "entities": [
+    {"text": "Barack Obama", "label": "PERSON"},
+    {"text": "United States", "label": "GPE"},
+    {"text": "White House", "label": "FAC"},
+    {"text": "Washington, D.C.", "label": "GPE"}
+  ]
+}
+
+
+Example 3: Text with No Entities
+---------------------------------
+curl -X POST "http://localhost:8000/extract_entities" \
+  -H "Content-Type: application/json" \
+  -d '{"text":"The quick brown fox jumps over the lazy dog."}'
+
+Expected Response:
+{
+  "entities": []
+}
+
+
+Example 4: Error - Empty Text
+------------------------------
+curl -X POST "http://localhost:8000/extract_entities" \
+  -H "Content-Type: application/json" \
+  -d '{"text":""}'
+
+Expected Response (400):
+{
+  "detail": "Text cannot be empty or contain only whitespace"
+}
+
+
+Example 5: Error - Missing Text Field
+--------------------------------------
+curl -X POST "http://localhost:8000/extract_entities" \
+  -H "Content-Type: application/json" \
+  -d '{}'
+
+Expected Response (422):
+{
+  "detail": [
+    {
+      "type": "missing",
+      "loc": ["body", "text"],
+      "msg": "Field required"
+    }
+  ]
+}
+
+
+TESTING:
+--------
+
+Run all tests:
+  pytest test_entities.py -v
+
+Run specific test:
+  pytest test_entities.py::TestExtractEntities::test_extract_entities_success -v
+
+Run tests with coverage:
+  pytest test_entities.py --cov=app --cov-report=html
+
+
+SUPPORTED ENTITY LABELS:
+-----------------------
+- PERSON: People, including fictional characters
+- ORG: Named organizations (companies, agencies, etc.)
+- GPE: Geopolitical entities (countries, cities, states)
+- FAC: Facilities (buildings, landmarks, etc.)
+- LOC: Non-GPE locations (mountains, rivers, etc.)
+- PRODUCT: Products or objects
+- EVENT: Named events
+- LAW: Named laws or legal documents
+- LANGUAGE: Named languages
+- DATE: Absolute or relative dates
+- TIME: Times smaller than a day
+- MONEY: Monetary values
+- QUANTITY: Measurements or counts
+- ORDINAL: Ordinal numbers
+- CARDINAL: Cardinal numbers
+
+
+IMPLEMENTATION NOTES:
+---------------------
+
+1. Error Handling:
+   - Empty or whitespace-only text returns 400 error
+   - Invalid JSON returns 422 error
+   - Missing required fields returns 422 error
+   - Server errors return 500 error
+
+2. Input Validation:
+   - Text field is required (min_length=1)
+   - Whitespace is stripped and validated
+   - Maximum text length is not restricted but consider performance
+
+3. Response Format:
+   - Always returns JSON with "entities" array
+   - Each entity has "text" and "label" fields
+   - Maintains order as processed by spaCy
+
+4. Performance:
+   - Model loading happens once at startup
+   - Can handle long documents
+   - Processing time depends on text length

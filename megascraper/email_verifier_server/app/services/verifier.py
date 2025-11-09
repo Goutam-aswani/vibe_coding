@@ -72,7 +72,8 @@ class EmailVerifierService:
             self._cookie_manager = CookieManager(
                 email=settings.EMAILVERIFIER_EMAIL,
                 password=settings.EMAILVERIFIER_PASSWORD,
-                refresh_interval_minutes=settings.COOKIE_REFRESH_INTERVAL
+                refresh_interval_minutes=settings.COOKIE_REFRESH_INTERVAL,
+                initial_cookie=self.session_cookie  # Pass existing cookie
             )
             logger.info("✅ Cookie auto-refresh enabled")
         except Exception as e:
@@ -90,27 +91,22 @@ class EmailVerifierService:
             return True  # No auto-refresh, assume current cookie is valid
         
         try:
-            # Check if cookie needs refresh
-            if self._cookie_manager.is_expired():
-                logger.info("🔄 Cookie expired, refreshing...")
-                new_cookie = await self._cookie_manager.get_cookie(force_refresh=True)
-                
-                if new_cookie:
-                    # Update cookies
-                    self.session_cookie = new_cookie
-                    self.cookies = f"{self.ga_cookie}; PHPSESSID={self.session_cookie}"
-                    self.headers["cookie"] = self.cookies
-                    
-                    # Update settings (optional - for persistence)
-                    settings.EMAILVERIFIER_SESSION_COOKIE = new_cookie
-                    
-                    logger.info("✅ Cookie refreshed successfully")
-                    return True
-                else:
-                    logger.error("❌ Failed to refresh cookie")
-                    return False
+            # Use get_cookie which handles expiry checking and refresh with proper locking
+            # It will only refresh if the interval has passed
+            new_cookie = await self._cookie_manager.get_cookie(force_refresh=False)
             
-            return True  # Cookie not expired
+            if new_cookie and new_cookie != self.session_cookie:
+                # Update cookies only if changed
+                self.session_cookie = new_cookie
+                self.cookies = f"{self.ga_cookie}; PHPSESSID={self.session_cookie}"
+                self.headers["cookie"] = self.cookies
+                
+                # Update settings (optional - for persistence)
+                settings.EMAILVERIFIER_SESSION_COOKIE = new_cookie
+                
+                logger.info("✅ Cookie refreshed successfully")
+            
+            return new_cookie is not None
             
         except Exception as e:
             logger.error(f"❌ Error during cookie refresh: {e}")

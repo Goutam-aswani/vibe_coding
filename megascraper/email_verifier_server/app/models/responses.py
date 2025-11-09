@@ -14,6 +14,10 @@ class EmailStatus(str, Enum):
     INVALID = "invalid"
     ERROR = "error"
     UNKNOWN = "unknown"
+    CATCH_ALL = "catch all"  # Catch-all email addresses
+    DISPOSABLE = "disposable"  # Disposable email addresses
+    ROLE = "role"  # Role-based emails (info@, admin@, etc.)
+    SPAMTRAP = "spamtrap"  # Spam trap addresses
 
 
 class JobStatus(str, Enum):

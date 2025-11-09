@@ -2,6 +2,12 @@
 FastAPI application for Email Verifier API
 """
 
+# Fix for Python 3.13+ on Windows with asyncio subprocess
+import sys
+if sys.platform == 'win32' and sys.version_info >= (3, 13):
+    import asyncio
+    asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse

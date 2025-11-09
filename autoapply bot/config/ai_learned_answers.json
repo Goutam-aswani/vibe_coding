@@ -1,0 +1,69 @@
+{
+  "select_questions": {
+    "how_did_you_hear_about_us": {
+      "question": "How did you hear about us?",
+      "answer": "LinkedIn",
+      "count": 1,
+      "first_seen": "2025-11-03 02:22:21",
+      "last_used": "2025-11-03 02:22:21",
+      "sessions": [
+        "2025-11-03"
+      ],
+      "options": [
+        "Select an option",
+        "Black Perspective",
+        "College Job Posting",
+        "Company Website",
+        "Disability Solutions at Work Ability Beyond",
+        "disABLED",
+        "Employ DIVERSITY",
+        "Employee Referral",
+        "Glassdoor",
+        "Google Jobs",
+        "Hire Heroes USA",
+        "Hispanic Today",
+        "Indeed",
+        "Jobs For Her",
+        "JOFDAV",
+        "Just Join IT",
+        "LinkedIn",
+        "Military VET Jobs",
+        "Naukri",
+        "No Fluff Jobs",
+        "Other",
+        "Pracuj",
+        "Simply Hired",
+        "tapABILITY",
+        "Technojobs",
+        "TotalJobs",
+        "Veterans Enterprise",
+        "Women for Hire",
+        "Women in Business Industry",
+        "Women in Tech",
+        "ZipRecruiter"
+      ]
+    },
+    "what_is_the_notice_period_you_need_to_give_to_your_current_organization_if_offered_a_position_at_pre": {
+      "question": "What is the notice period you need to give to your current organization if offered a position at Precisely?",
+      "answer": "30 days notice",
+      "count": 1,
+      "first_seen": "2025-11-03 02:22:22",
+      "last_used": "2025-11-03 02:22:22",
+      "sessions": [
+        "2025-11-03"
+      ],
+      "options": [
+        "Select an option",
+        "Immediately Available",
+        "2 weeks notice",
+        "30 days notice",
+        "60 days notice",
+        "90 days notice",
+        "Other"
+      ]
+    }
+  },
+  "radio_questions": {},
+  "text_questions": {},
+  "textarea_questions": {}
+}

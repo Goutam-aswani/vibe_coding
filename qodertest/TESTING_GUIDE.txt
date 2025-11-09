@@ -1,0 +1,214 @@
+================================================================================
+TESTING STRATEGY FOR ENTITY EXTRACTION ENDPOINT
+================================================================================
+
+OVERVIEW:
+---------
+The testing approach covers unit tests, integration tests, and manual testing
+using the pytest framework with FastAPI's TestClient.
+
+
+TEST CATEGORIES:
+----------------
+
+1. HAPPY PATH TESTS
+   ✓ test_extract_entities_success
+     - Validates successful extraction of common entity types
+     - Checks response format and structure
+     - Verifies entities are correctly identified
+
+   ✓ test_extract_entities_with_multiple_types
+     - Tests extraction of diverse entity types (PERSON, ORG, GPE, FAC)
+     - Validates spaCy correctly identifies different categories
+
+   ✓ test_long_text_input
+     - Tests performance with longer texts
+     - Ensures no errors with complex documents
+     - Validates all entities are extracted
+
+
+2. EDGE CASE TESTS
+   ✓ test_extract_entities_no_entities
+     - Text with no named entities returns empty list
+     - Verifies graceful handling of entity-free text
+
+   ✓ test_empty_text_input
+     - Empty string is rejected with 400 error
+     - Validates input validation
+
+   ✓ test_whitespace_only_text
+     - Whitespace-only input is rejected with 400 error
+     - Tests strip() and validation logic
+
+
+3. ERROR HANDLING TESTS
+   ✓ test_missing_text_field
+     - Missing required field returns 422 error
+     - Validates Pydantic validation
+
+   ✓ test_invalid_json
+     - Malformed JSON returns 422 error
+     - Tests request parsing
+
+
+4. RESPONSE FORMAT TESTS
+   ✓ test_response_format
+     - Validates JSON structure matches specification
+     - Checks entity objects have required fields (text, label)
+     - Verifies data types
+
+
+5. INTEGRATION TESTS
+   ✓ test_root_endpoint
+     - Health check endpoint works
+     - Documentation is available
+
+
+RUNNING TESTS:
+--------------
+
+Basic test run:
+  pytest test_entities.py -v
+
+Output shows:
+  - Test name and result (PASSED/FAILED)
+  - Execution time
+  - Summary of passed/failed tests
+
+Run specific test class:
+  pytest test_entities.py::TestExtractEntities -v
+
+Run specific test:
+  pytest test_entities.py::TestExtractEntities::test_extract_entities_success -v
+
+Show print statements:
+  pytest test_entities.py -v -s
+
+With code coverage:
+  pytest test_entities.py --cov=app --cov-report=html
+  (Opens htmlcov/index.html in browser)
+
+Run tests on file change (requires pytest-watch):
+  ptw test_entities.py
+
+
+MANUAL TESTING WITH CURL:
+--------------------------
+
+Start the server:
+  python app.py
+
+In another terminal, test with curl:
+
+# Simple test
+curl -X POST "http://localhost:8000/extract_entities" \
+  -H "Content-Type: application/json" \
+  -d '{"text":"Apple was founded by Steve Jobs."}'
+
+# Test empty input
+curl -X POST "http://localhost:8000/extract_entities" \
+  -H "Content-Type: application/json" \
+  -d '{"text":""}'
+
+# Test missing field
+curl -X POST "http://localhost:8000/extract_entities" \
+  -H "Content-Type: application/json" \
+  -d '{}'
+
+
+TESTING WITH PYTHON REQUESTS:
+------------------------------
+
+import requests
+
+url = "http://localhost:8000/extract_entities"
+payload = {"text": "OpenAI is based in San Francisco."}
+response = requests.post(url, json=payload)
+
+print(response.json())
+# Output:
+# {
+#   "entities": [
+#     {"text": "OpenAI", "label": "ORG"},
+#     {"text": "San Francisco", "label": "GPE"}
+#   ]
+# }
+
+
+TEST COVERAGE ANALYSIS:
+-----------------------
+
+The test suite covers:
+
+✓ Input Validation
+  - Valid inputs (happy path)
+  - Empty strings
+  - Whitespace-only strings
+  - Missing required fields
+  - Invalid JSON
+
+✓ Output Validation
+  - Correct response format
+  - Proper JSON structure
+  - Entity object structure
+
+✓ Entity Detection
+  - PERSON entities
+  - ORG entities
+  - GPE entities
+  - Text with no entities
+
+✓ Error Handling
+  - 400 errors for invalid input
+  - 422 errors for malformed requests
+  - 500 errors for server issues
+
+✓ Edge Cases
+  - Long documents
+  - Multiple entity types
+  - No entities in text
+
+
+EXPECTED TEST RESULTS:
+----------------------
+
+When running: pytest test_entities.py -v
+
+Expected output:
+  test_extract_entities_success PASSED
+  test_extract_entities_with_multiple_types PASSED
+  test_extract_entities_no_entities PASSED
+  test_empty_text_input PASSED
+  test_whitespace_only_text PASSED
+  test_missing_text_field PASSED
+  test_invalid_json PASSED
+  test_long_text_input PASSED
+  test_response_format PASSED
+  test_root_endpoint PASSED
+
+  ============= 10 passed in X.XXs =============
+
+
+PERFORMANCE CONSIDERATIONS:
+----------------------------
+
+1. Model Loading: spaCy model loads once at startup (~60-100ms)
+2. Processing Speed: ~10-50ms per request depending on text length
+3. Memory: Model uses ~40-60MB in memory
+4. Scalability: Can handle concurrent requests with uvicorn workers
+
+
+TROUBLESHOOTING:
+----------------
+
+Issue: "OSError: spaCy model 'en_core_web_sm' not found"
+Solution: python -m spacy download en_core_web_sm
+
+Issue: "Address already in use" error
+Solution: Change port in app.py or kill process using port 8000
+
+Issue: Tests fail with import errors
+Solution: Ensure app.py and test_entities.py are in same directory
+
+Issue: Slow responses
+Solution: Check text length, consider adding timeout limits

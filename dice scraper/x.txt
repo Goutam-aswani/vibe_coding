@@ -1,0 +1,241 @@
+{
+  "total_jobs": 21,
+  "jobs": [
+    {
+      "title": "",
+      "company": "",
+      "location": "Remote or Dallas, Texas",
+      "posted_date": "Today",
+      "salary": "$200",
+      "job_type": "Full-time",
+      "description": "Ground Penetrating Radar Systems",
+      "job_url": "https://www.dice.com/job-detail/c9f34c24-0959-47e6-a64c-cd660fa3b6bc",
+      "company_url": "https://www.dice.com/company-profile/b3df54a1-726d-4fa3-9724-bc9bd4935cbd?companyname=Ground%20Penetrating%20Radar%20Systems"
+    },
+    {
+      "title": "",
+      "company": "",
+      "location": "Remote or Hybrid in Washington, District of Columbia",
+      "posted_date": "Today",
+      "salary": "$60,000 - $80,000",
+      "job_type": "Contract",
+      "description": "AaraTechnologies Inc",
+      "job_url": "https://www.dice.com/job-detail/3cd7d427-3b9e-4d1d-90d1-fb2628373926",
+      "company_url": "https://www.dice.com/company-profile/5373bd70-cbb2-5dd3-bdde-e83685131c78?companyname=AaraTechnologies%20Inc"
+    },
+    {
+      "title": "",
+      "company": "",
+      "location": "Remote or Fort Worth, Texas",
+      "posted_date": "Today",
+      "salary": "USD 108,800.00 - 191,820.00 per year",
+      "job_type": "Full-time",
+      "description": "Lockheed Martin Corporation",
+      "job_url": "https://www.dice.com/job-detail/bb6d5f22-0f73-48cd-872d-db7f6155e87b",
+      "company_url": "https://www.dice.com/company-profile/f2ad2a59-bdb4-487c-bd0d-19f00042eebf?companyname=Lockheed%20Martin%20Corporation"
+    },
+    {
+      "title": "",
+      "company": "",
+      "location": "Remote",
+      "posted_date": "Today",
+      "salary": "USD 99,000.00 - 225,000.00 per year",
+      "job_type": "Full-time",
+      "description": "Booz Allen Hamilton",
+      "job_url": "https://www.dice.com/job-detail/8b408cda-fa7b-44bd-a9a8-1dd8a492eba7",
+      "company_url": "https://www.dice.com/company-profile/3ea34b07-fec0-5f54-a0e9-202d447a70d7?companyname=Booz%20Allen%20Hamilton"
+    },
+    {
+      "title": "",
+      "company": "",
+      "location": "Remote",
+      "posted_date": "Yesterday",
+      "salary": "$40 - $50",
+      "job_type": "Contract",
+      "description": "Collaborate Solutions, Inc.",
+      "job_url": "https://www.dice.com/job-detail/23a5ac30-1aa4-4e42-9da6-0c7041d49ca0",
+      "company_url": "https://www.dice.com/company-profile/25ca6ca5-f863-53b0-af0a-68743fc844c9?companyname=Collaborate%20Solutions%2C%20Inc."
+    },
+    {
+      "title": "",
+      "company": "",
+      "location": "Remote",
+      "posted_date": "Today",
+      "salary": "USD 99,000.00 - 225,000.00 per year",
+      "job_type": "Full-time",
+      "description": "Booz Allen Hamilton",
+      "job_url": "https://www.dice.com/job-detail/9cf112a3-5c94-48fe-8597-06d1068e1ffb",
+      "company_url": "https://www.dice.com/company-profile/3ea34b07-fec0-5f54-a0e9-202d447a70d7?companyname=Booz%20Allen%20Hamilton"
+    },
+    {
+      "title": "",
+      "company": "",
+      "location": "Remote",
+      "posted_date": "Today",
+      "salary": "USD 99,000.00 - 225,000.00 per year",
+      "job_type": "Full-time",
+      "description": "Booz Allen Hamilton",
+      "job_url": "https://www.dice.com/job-detail/26e2b9d4-33ed-48d9-8e7a-d86716dec88a",
+      "company_url": "https://www.dice.com/company-profile/3ea34b07-fec0-5f54-a0e9-202d447a70d7?companyname=Booz%20Allen%20Hamilton"
+    },
+    {
+      "title": "",
+      "company": "",
+      "location": "Remote",
+      "posted_date": "Today",
+      "salary": null,
+      "job_type": "Contract",
+      "description": "Milestone Technologies, Inc.",
+      "job_url": "https://www.dice.com/job-detail/810e4043-0ed5-439f-8cec-6fb279744182",
+      "company_url": "https://www.dice.com/company-profile/66413acd-63fa-5e54-982a-d3d0ffd1d04d?companyname=Milestone%20Technologies%2C%20Inc."
+    },
+    {
+      "title": "",
+      "company": "",
+      "location": "Remote",
+      "posted_date": "3d ago",
+      "salary": "$75 - $80",
+      "job_type": "Contract",
+      "description": "Pyramid Consulting, Inc.",
+      "job_url": "https://www.dice.com/job-detail/9f8aee45-e8c9-48bf-bfa5-bd60f00547fe",
+      "company_url": "https://www.dice.com/company-profile/720caa51-87af-51ca-a805-c69015b9556f?companyname=Pyramid%20Consulting%2C%20Inc."
+    },
+    {
+      "title": "",
+      "company": "",
+      "location": "Remote or Atlanta, Georgia",
+      "posted_date": "Today",
+      "salary": "$143,000 - $170,000",
+      "job_type": "Full-time",
+      "description": "Kforce Technology Staffing",
+      "job_url": "https://www.dice.com/job-detail/98b3bdb1-a281-460b-898d-f7ca7050eec5",
+      "company_url": "https://www.dice.com/company-profile/171741b7-87ab-5a96-90bf-be5a98023b9b?companyname=Kforce%20Technology%20Staffing"
+    },
+    {
+      "title": "",
+      "company": "",
+      "location": "Remote",
+      "posted_date": "2d ago",
+      "salary": "Depends on Experience",
+      "job_type": "Contract",
+      "description": "Dminds Solutions Inc.",
+      "job_url": "https://www.dice.com/job-detail/645b5d95-acf3-4ab7-8601-318a9d122ede",
+      "company_url": "https://www.dice.com/company-profile/cc12d7a9-6765-5c36-96c5-49d67865d99d?companyname=Dminds%20Solutions%20Inc."
+    },
+    {
+      "title": "",
+      "company": "",
+      "location": "Remote or Hybrid in Dallas, Texas",
+      "posted_date": "Today",
+      "salary": "$65 - $70 hr",
+      "job_type": "Contract",
+      "description": "NTT DATA Americas, Inc",
+      "job_url": "https://www.dice.com/job-detail/43429ff3-1e19-4ccd-b350-d06dd39d6ace",
+      "company_url": "https://www.dice.com/company-profile/c643d872-2d85-58b4-bac1-e67ec36f3271?companyname=NTT%20DATA%20Americas%2C%20Inc"
+    },
+    {
+      "title": "",
+      "company": "",
+      "location": "Remote or Arkansas",
+      "posted_date": "Yesterday",
+      "salary": "$80000-100000",
+      "job_type": "Full-time",
+      "description": "Right Skale, Inc.",
+      "job_url": "https://www.dice.com/job-detail/f90aeff3-fb18-4802-9ce7-24d716ea741d",
+      "company_url": "https://www.dice.com/company-profile/873bff64-aef2-530a-915b-83d9ddd5b474?companyname=Right%20Skale%2C%20Inc."
+    },
+    {
+      "title": "",
+      "company": "",
+      "location": "Remote",
+      "posted_date": "12d ago",
+      "salary": "Depends on Experience",
+      "job_type": "Contract",
+      "description": "Apex 2000",
+      "job_url": "https://www.dice.com/job-detail/db88527f-9aef-4bdc-a70f-4adb264c0597",
+      "company_url": "https://www.dice.com/company-profile/2c849fb9-e729-5256-86a7-7d3ba821a7c2?companyname=Apex%202000"
+    },
+    {
+      "title": "",
+      "company": "",
+      "location": "Remote",
+      "posted_date": "2d ago",
+      "salary": "Depends on Experience",
+      "job_type": "Contract",
+      "description": "Next Level Business Services, Inc.",
+      "job_url": "https://www.dice.com/job-detail/c2b67ebb-9ab6-4e6a-920a-9ec2ee277202",
+      "company_url": "https://www.dice.com/company-profile/be7486ed-cfaf-5c9d-add4-b73409faf9b4?companyname=Next%20Level%20Business%20Services%2C%20Inc."
+    },
+    {
+      "title": "",
+      "company": "",
+      "location": "Remote",
+      "posted_date": "Today",
+      "salary": null,
+      "job_type": "Contract",
+      "description": "Calance",
+      "job_url": "https://www.dice.com/job-detail/de44e655-542c-4e83-bb05-4524310764b4",
+      "company_url": "https://www.dice.com/company-profile/736fcdd4-39f2-5eef-b3fd-23f427d39cfd?companyname=Calance"
+    },
+    {
+      "title": "",
+      "company": "",
+      "location": "Remote or Hybrid in San Francisco, California",
+      "posted_date": "2d ago",
+      "salary": "Depends on Experience",
+      "job_type": "Contract",
+      "description": "Quality IT Source, LLC",
+      "job_url": "https://www.dice.com/job-detail/6a6345cd-7f31-4e1c-909f-71b4c272fafd",
+      "company_url": "https://www.dice.com/company-profile/7d1c5d9b-0562-53f5-9aae-9ff8b1a689ea?companyname=Quality%20IT%20Source%2C%20LLC"
+    },
+    {
+      "title": "",
+      "company": "",
+      "location": "Remote",
+      "posted_date": "Yesterday",
+      "salary": null,
+      "job_type": "Contract",
+      "description": "Accentuate IT Solutions",
+      "job_url": "https://www.dice.com/job-detail/2744ecb2-0155-46af-b491-3112d3ce331d",
+      "company_url": "https://www.dice.com/company-profile/9b78c4fe-cf80-5101-bd27-4ec585cda387?companyname=Accentuate%20IT%20Solutions"
+    },
+    {
+      "title": "",
+      "company": "",
+      "location": "Remote",
+      "posted_date": "4d ago",
+      "salary": "$70 - $90",
+      "job_type": "Contract",
+      "description": "A2C Consulting",
+      "job_url": "https://www.dice.com/job-detail/fc5b8833-2aa2-4573-a068-c98a5201c469",
+      "company_url": "https://www.dice.com/company-profile/976dda8c-eebc-57ac-a4a9-e37a9bea2734?companyname=A2C%20Consulting"
+    },
+    {
+      "title": "",
+      "company": "",
+      "location": "Remote",
+      "posted_date": "5d ago",
+      "salary": "Depends on Experience",
+      "job_type": "Contract",
+      "description": "iMedhas Consulting Services",
+      "job_url": "https://www.dice.com/job-detail/403d8e3f-9f2c-4030-90bb-4f4f2463346a",
+      "company_url": "https://www.dice.com/company-profile/81bbddfd-1b57-4cf8-8eb2-27da95b5bc41?companyname=iMedhas%20Consulting%20Services"
+    },
+    {
+      "title": "",
+      "company": "",
+      "location": "Remote",
+      "posted_date": null,
+      "salary": "$80",
+      "job_type": "Contract",
+      "description": "HPTech Inc.",
+      "job_url": "https://www.dice.com/job-detail/764d9ca1-076b-4612-9ca4-6af7ae14c808",
+      "company_url": "https://www.dice.com/company-profile/bf944c9f-e8df-46e7-b88b-78d9729799a2?companyname=HPTech%20Inc."
+    }
+  ],
+  "search_query": "AI engineer",
+  "filters": {
+    "workplace_type": "Remote",
+    "page": 1
+  }
+}

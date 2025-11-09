@@ -1,0 +1,136 @@
+================================================================================
+QUICK START GUIDE
+================================================================================
+
+INSTALLATION (5 minutes):
+------------------------
+
+1. Install Python dependencies:
+   pip install -r requirements.txt
+
+2. Download spaCy English model:
+   python -m spacy download en_core_web_sm
+
+3. Verify installation:
+   python -c "import spacy; nlp = spacy.load('en_core_web_sm'); print('Success!')"
+
+
+RUN THE SERVICE:
+----------------
+
+Start the server:
+  python app.py
+
+Expected output:
+  INFO:     Uvicorn running on http://0.0.0.0:8000
+  INFO:     Application startup complete
+
+
+TEST THE ENDPOINT (in another terminal):
+----------------------------------------
+
+Example 1 - Basic extraction:
+  curl -X POST "http://localhost:8000/extract_entities" \
+    -H "Content-Type: application/json" \
+    -d '{"text":"Apple was founded by Steve Jobs in California."}'
+
+Response:
+  {
+    "entities": [
+      {"text": "Apple", "label": "ORG"},
+      {"text": "Steve Jobs", "label": "PERSON"},
+      {"text": "California", "label": "GPE"}
+    ]
+  }
+
+Example 2 - Error handling (empty text):
+  curl -X POST "http://localhost:8000/extract_entities" \
+    -H "Content-Type: application/json" \
+    -d '{"text":""}'
+
+Response (400):
+  {"detail": "Text cannot be empty or contain only whitespace"}
+
+
+RUN TESTS:
+----------
+
+Run all tests:
+  pytest test_entities.py -v
+
+Expected: 10 tests pass
+
+Run specific test:
+  pytest test_entities.py::TestExtractEntities::test_extract_entities_success -v
+
+
+API ENDPOINT:
+-------------
+
+POST /extract_entities
+
+Request:
+  {
+    "text": "Your text here..."
+  }
+
+Response:
+  {
+    "entities": [
+      {"text": "entity text", "label": "LABEL_TYPE"},
+      ...
+    ]
+  }
+
+Entity types: PERSON, ORG, GPE, FAC, LOC, PRODUCT, EVENT, LAW, LANGUAGE, 
+              DATE, TIME, MONEY, QUANTITY, ORDINAL, CARDINAL
+
+
+FILE GUIDE:
+-----------
+
+app.py                 → FastAPI application with endpoint
+test_entities.py       → Comprehensive test suite (10 tests)
+requirements.txt       → Python dependencies
+QUICKSTART.txt         → This file
+USAGE_EXAMPLES.txt     → Detailed curl examples
+TESTING_GUIDE.txt      → Testing documentation
+IMPLEMENTATION.txt     → Technical implementation details
+
+
+ENTITY LABELS REFERENCE:
+------------------------
+
+PERSON   - People (e.g., "Steve Jobs")
+ORG      - Organizations (e.g., "Apple Inc.")
+GPE      - Countries, cities, states (e.g., "California")
+FAC      - Facilities (e.g., "White House")
+LOC      - Locations (e.g., "Mount Everest")
+PRODUCT  - Products (e.g., "iPhone")
+EVENT    - Events (e.g., "World Cup")
+LAW      - Laws (e.g., "Constitution")
+LANGUAGE - Languages (e.g., "English")
+DATE     - Dates (e.g., "Monday")
+TIME     - Times (e.g., "3pm")
+MONEY    - Money (e.g., "$100")
+QUANTITY - Quantities (e.g., "5 kg")
+ORDINAL  - Ordinal numbers (e.g., "first")
+CARDINAL - Cardinal numbers (e.g., "5")
+
+
+TROUBLESHOOTING:
+----------------
+
+❌ "ModuleNotFoundError: No module named 'fastapi'"
+✅ pip install -r requirements.txt
+
+❌ "OSError: [E050] Can't find model 'en_core_web_sm'"
+✅ python -m spacy download en_core_web_sm
+
+❌ "Address already in use"
+✅ Change port in app.py line 62 or kill existing process
+
+❌ Tests import error
+✅ Ensure app.py and test_entities.py are in same directory
+
+For more details, see IMPLEMENTATION.txt or TESTING_GUIDE.txt

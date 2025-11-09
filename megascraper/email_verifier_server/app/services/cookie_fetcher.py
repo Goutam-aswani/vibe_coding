@@ -210,7 +210,8 @@ class CookieManager:
         self,
         email: str,
         password: str,
-        refresh_interval_minutes: int = 50  # Refresh before 1 hour expiry
+        refresh_interval_minutes: int = 50,  # Refresh before 1 hour expiry
+        initial_cookie: Optional[str] = None  # Existing cookie to start with
     ):
         """
         Initialize cookie manager
@@ -219,12 +220,17 @@ class CookieManager:
             email: Login email
             password: Login password
             refresh_interval_minutes: How often to refresh cookie (default: 50 min)
+            initial_cookie: Existing valid cookie to start with
         """
         self.fetcher = CookieFetcher(email, password)
         self.refresh_interval = timedelta(minutes=refresh_interval_minutes)
-        self.current_cookie: Optional[str] = None
-        self.last_refresh: Optional[datetime] = None
+        self.current_cookie: Optional[str] = initial_cookie
+        # If we have an initial cookie, assume it was just fetched
+        self.last_refresh: Optional[datetime] = datetime.now() if initial_cookie else None
         self._lock = asyncio.Lock()
+        
+        if initial_cookie:
+            logger.info(f"🔄 Cookie manager initialized with existing cookie (will refresh in {refresh_interval_minutes} minutes)")
         
     async def get_cookie(self, force_refresh: bool = False) -> Optional[str]:
         """

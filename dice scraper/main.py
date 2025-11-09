@@ -108,18 +108,65 @@ def scrape_dice_jobs(
                 parent = link.find_parent(['div', 'article'])
                 
                 if parent:
-                    # Extract job title
-                    title = link.get_text(strip=True)
+                    # Extract job title - try multiple methods
+                    title = None
+                    # Method 1: Try aria-label attribute
+                    title = link.get('aria-label', '').strip()
+                    # Method 2: Try title attribute
+                    if not title:
+                        title = link.get('title', '').strip()
+                    # Method 3: Try getting text from link
+                    if not title:
+                        title = link.get_text(strip=True)
+                    # Method 4: Look for title in nested spans or divs
+                    if not title:
+                        title_elem = link.find(['span', 'div', 'h2', 'h3'])
+                        if title_elem:
+                            title = title_elem.get_text(strip=True)
+                    
+                    # Clean up the title - remove "View Details for" prefix and hash suffix
+                    if title:
+                        # Remove "View Details for" prefix
+                        title = re.sub(r'^View Details for\s+', '', title, flags=re.IGNORECASE)
+                        # Remove hash pattern at the end (hex string in parentheses)
+                        title = re.sub(r'\s*\([a-f0-9]{32}\)\s*$', '', title)
+                        title = title.strip()
                     
                     # Extract company name - look for company links
                     company = None
                     company_url = None
-                    company_link = parent.find('a', href=re.compile(r'/company-profile/'))
-                    if company_link:
-                        company = company_link.get_text(strip=True)
+                    # Find ALL company links (there might be multiple - logo and text)
+                    company_links = parent.find_all('a', href=re.compile(r'/company-profile/'))
+                    
+                    for company_link in company_links:
                         company_url = company_link.get('href', '')
                         if company_url and not company_url.startswith('http'):
                             company_url = f"https://www.dice.com{company_url}"
+                        
+                        # Try to get company name from the link text
+                        temp_company = company_link.get_text(strip=True)
+                        
+                        # Skip if it's empty or just "Company Logo" or similar generic text
+                        if temp_company:
+                            company_lower = temp_company.lower()
+                            if 'logo' not in company_lower and company_lower not in ['company', 'company profile']:
+                                company = temp_company
+                                break  # Found a good company name, stop searching
+                    
+                    # If still no company name found, try attributes or extract from URL
+                    if not company and company_links:
+                        company_link = company_links[0]  # Use first link for fallback
+                        company = company_link.get('aria-label', '').strip()
+                        if not company:
+                            company = company_link.get('title', '').strip()
+                        
+                        # If still no company name, extract from company_url
+                        if not company and company_url:
+                            # Extract from URL parameter companyname=...
+                            company_match = re.search(r'companyname=([^&]+)', company_url)
+                            if company_match:
+                                from urllib.parse import unquote
+                                company = unquote(company_match.group(1))
                     
                     # Extract location and posted date
                     location = None
@@ -188,10 +235,24 @@ def scrape_dice_jobs(
                     if desc_elem:
                         description = desc_elem.get_text(strip=True)[:300]  # Limit to 300 chars
                     else:
-                        # Try to get any paragraph text
-                        paragraphs = parent.find_all('p')
-                        if paragraphs:
-                            description = paragraphs[0].get_text(strip=True)[:300]
+                        # Get all text elements and find the longest one (likely the description)
+                        text_elements = parent.find_all(['p', 'div'])
+                        longest_text = ""
+                        for elem in text_elements:
+                            elem_text = elem.get_text(strip=True)
+                            # Skip if it looks like company name, location, or salary
+                            if company and company in elem_text and len(elem_text) < 100:
+                                continue
+                            if location and location in elem_text and len(elem_text) < 100:
+                                continue
+                            if salary and salary in elem_text and len(elem_text) < 100:
+                                continue
+                            # Keep the longest text that's substantial
+                            if len(elem_text) > len(longest_text) and len(elem_text) > 50:
+                                longest_text = elem_text
+                        
+                        if longest_text:
+                            description = longest_text[:300]  # Limit to 300 chars
                     
                     # Create job posting object
                     job = JobPosting(
