@@ -12,9 +12,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 import logging
+import os
+from pathlib import Path
+from dotenv import set_key
 
 from app.core.config import settings
 from app.api.routes import router
+from app.services.cookie_fetcher import fetch_cookie_cli
 
 # Configure logging
 logging.basicConfig(
@@ -47,6 +51,47 @@ app.add_middleware(
 app.include_router(router)
 
 
+async def refresh_cookie_on_startup():
+    """Refresh the session cookie on server startup"""
+    try:
+        logger.info("🔄 Refreshing session cookie on startup...")
+        
+        email = settings.EMAILVERIFIER_EMAIL
+        password = settings.EMAILVERIFIER_PASSWORD
+        
+        if not email or not password:
+            logger.warning("⚠️  Cookie auto-refresh skipped: EMAILVERIFIER_EMAIL or EMAILVERIFIER_PASSWORD not set in .env")
+            logger.warning("💡 Set these credentials to enable automatic cookie refresh on startup")
+            return
+        
+        # Fetch new cookie (headless mode for server startup)
+        cookie = await fetch_cookie_cli(email, password, headless=True)
+        
+        if not cookie:
+            logger.error("❌ Failed to refresh cookie on startup")
+            logger.warning("⚠️  Server will continue with existing cookie from .env")
+            return
+        
+        # Update .env file with new cookie
+        env_path = Path(__file__).parent.parent / ".env"
+        
+        if not env_path.exists():
+            logger.error("❌ .env file not found, cannot update cookie")
+            return
+        
+        set_key(env_path, "EMAILVERIFIER_SESSION_COOKIE", cookie)
+        
+        # Update the settings in memory
+        settings.EMAILVERIFIER_SESSION_COOKIE = cookie
+        
+        logger.info("✅ Cookie refreshed and updated successfully!")
+        logger.info(f"   New Cookie: {cookie[:30]}... (truncated)")
+        
+    except Exception as e:
+        logger.error(f"❌ Error refreshing cookie on startup: {e}")
+        logger.warning("⚠️  Server will continue with existing cookie from .env")
+
+
 @app.on_event("startup")
 async def startup_event():
     """Application startup event"""
@@ -55,6 +100,9 @@ async def startup_event():
     logger.info(f"🔐 API Key Required: {'Yes' if settings.API_KEY else 'No (Open Access)'}")
     logger.info(f"⚙️  Rate Limit: {settings.RATE_LIMIT_DELAY}s between requests")
     logger.info(f"⚡ Max Concurrent: {settings.MAX_CONCURRENT} verifications")
+    
+    # Refresh cookie on startup
+    await refresh_cookie_on_startup()
 
 
 @app.on_event("shutdown")

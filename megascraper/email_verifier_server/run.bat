@@ -21,7 +21,7 @@ echo ======================================================================
 echo.
 
 REM Start uvicorn directly with port 8002 using absolute path
-"%~dp0..\.venv\Scripts\python.exe" -m uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
+"%~dp0..\.venv\Scripts\python.exe" -m uvicorn app.main:app --host 0.0.0.0 --port 8001
 
 REM Return to original directory
 popd
